@@ -1,3 +1,10 @@
+%   GRUPO 6 - 
+%   Pedro Rodrigues Pereira - 17/0062686
+%   Daniel de Sousa Oliveira Melo Veras - 17/0008371
+
+%Fir Passa Baixa
+
+
 %packages
 pkg load signal;
 
@@ -5,44 +12,40 @@ pkg load signal;
 clc;
 clear all;
 
-Fs = 8.5;
+%definição
+Fs = 10e3;
 Ts = (1/Fs);
-Ns = 512;
+Ns = 256;
 dt = [0:Ts:Ts*(Ns-1)];
 
-f1 = 7;
-f2 = 7.5;
-f3 = 9.5;
-f4 = 10;
+%freqs de teste
+f1 = 7.5e3;
+f2 = 7.5e3;
+f3 = 9.5e3;
+f4 = 10e3;
 
+%criação das senoides pra X
 x = sin(2*pi*f1*dt) + sin(2*pi*f2*dt) + sin(2*pi*f3*dt) + sin(2*pi*f4*dt);
 
+%plot de X
 plot(dt,x);
+title('Freq');
 grid on;
-N = 256;
-W = [0.4 0.6];
 
-b = fir1(N,W,'low');
+%freq de corte normalizando
+cut_off=8.5e3/Fs/2;
+order=64;
 
-a = 1;
-freqz(b,a);
+%corte e filtro
+b=fir1(order,cut_off,'low');
+a=1;
+y = filter(b,a,x);
 
+%Plot de Y
+figure;
+plot(dt,y);
+title('Freq filtrada');
 
-
-
-%nfft = length(y);
-%nfft2 = 2.^nextpow2(nfft);
-%
-%fy = fft(y,nfft2);
-%fy= fy(1:nfft2/2);
-%
-%xfft=Fs.*(0:nfft2/2-1)/nfft2;
-%
-%cut_off=1.5e3/Fs/2;
-%order=256;
-%
-%h=fir1(order,cut_off,'low');
-%
-%con = conv(y,h);
-%figure;
-%plot(con);
+%Plot Freq sem normalizar
+figure;
+freqz_plot(dt,y);
