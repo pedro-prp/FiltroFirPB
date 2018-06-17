@@ -1,31 +1,48 @@
+%packages
+pkg load signal;
 
 %clear
 clc;
 clear all;
 
-Fs = 200e3;
+Fs = 8.5;
 Ts = (1/Fs);
-dt = 0:Ts:5e-3-Ts;
+Ns = 512;
+dt = [0:Ts:Ts*(Ns-1)];
 
-f1=1e3;
-f2=20e3;
-f3=30e3;
+f1 = 7;
+f2 = 7.5;
+f3 = 9.5;
+f4 = 10;
 
-y = 5*sin(2*pi*f1*dt) + 5*sin(2*pi*f2*dt) + 10*sin(2*pi*f3*dt);
-plot(dt,y);
-nfft = length(y);
-nfft2 = 2.^nextpow2(nfft);
+x = sin(2*pi*f1*dt) + sin(2*pi*f2*dt) + sin(2*pi*f3*dt) + sin(2*pi*f4*dt);
 
-fy = fft(y,nfft2);
-fy= fy(1:nfft2/2);
+plot(dt,x);
+grid on;
+N = 256;
+W = [0.4 0.6];
 
-xfft=Fs.*(0:nfft2/2-1)/nfft2;
+b = fir1(N,W,'low');
 
-cut_off=1.5e3/Fs/2;
-order=32;
+a = 1;
+freqz(b,a);
 
-h=fir1(order,cut_off,'low');
 
-con = conv(y,h);
-figure;
-plot(con);
+
+
+%nfft = length(y);
+%nfft2 = 2.^nextpow2(nfft);
+%
+%fy = fft(y,nfft2);
+%fy= fy(1:nfft2/2);
+%
+%xfft=Fs.*(0:nfft2/2-1)/nfft2;
+%
+%cut_off=1.5e3/Fs/2;
+%order=256;
+%
+%h=fir1(order,cut_off,'low');
+%
+%con = conv(y,h);
+%figure;
+%plot(con);
