@@ -11,4 +11,6 @@ f1=1e3;
 f2=20e3;
 f3=30e3;
 
-x = 2 sin(2*pi*f1*dt)+2 sin(2*pi*f1*dt);
+y = 5*sin(2*pi*f1*dt) + 5*sin(2*pi*f2*dt) + 10*sin(2*pi*f3*dt);
+
+plot(dt,y)
